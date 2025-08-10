@@ -12,7 +12,7 @@ class TabBarCoordinator: Coordinator {
     var parentCoordinator: (Coordinator)?
     var navigationController: UINavigationController
     private var tabBarController: UITabBarController
-
+    var onLogout: (() -> Void)?
     init(navigationController: UINavigationController) {
         self.navigationController = navigationController
         self.tabBarController = UITabBarController()
@@ -40,11 +40,14 @@ class TabBarCoordinator: Coordinator {
     }
     
     private func startAndGetHomeCoordinator(navigationController: UINavigationController) -> HomeCoordinator {
-        let homeCoordinater = HomeCoordinator(navigationController: navigationController)
-        childCoordinators.append(homeCoordinater)
-        homeCoordinater.parentCoordinator = self
-        homeCoordinater.start()
-        return homeCoordinater
+        let homeCoordinator = HomeCoordinator(navigationController: navigationController)
+        homeCoordinator.parentCoordinator = self
+        homeCoordinator.onLogout = { [weak self] in
+            self?.onLogout?()
+        }
+        childCoordinators.append(homeCoordinator)
+        homeCoordinator.start()
+        return homeCoordinator
     }
     
     private func startAndGetFavoritesCoordinator(navigationController: UINavigationController) -> FavoritesCoordinator {

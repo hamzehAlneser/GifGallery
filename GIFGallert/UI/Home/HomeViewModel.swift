@@ -12,6 +12,7 @@ final class HomeViewModel {
     var homeDataError: ((String) -> Void)?
     var homeCellViewModels: [ItemTableviewCellVM] = []
     var navigateToDetails: ((DetailsViewModel) -> Void)?
+    var logoutUser: (() -> Void)?
     
     private var currentPage = 1
     private var offset: Int = 0
@@ -45,6 +46,11 @@ final class HomeViewModel {
             favoritesService: favoritesService
         )
         navigateToDetails?(mappedDetailsModel)
+    }
+    
+    func logout() {
+        UserDefaults.standard.set(false, forKey: UserDefaultsKeys.isLoggedIn.stringValue)
+        logoutUser?()
     }
 }
 //MARK: - Fetching data

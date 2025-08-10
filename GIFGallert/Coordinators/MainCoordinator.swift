@@ -40,8 +40,17 @@ extension MainCoordinator {
     
     private func startTabBarCoordinator() {
         let tabBarCoordinator = TabBarCoordinator(navigationController: navigationController)
-        childCoordinators.append(tabBarCoordinator)
         tabBarCoordinator.parentCoordinator = self
+        tabBarCoordinator.onLogout = { [weak self] in
+            self?.handleLogout()
+        }
+        childCoordinators.append(tabBarCoordinator)
         tabBarCoordinator.start()
+    }
+    
+    private func handleLogout() {
+        childCoordinators.removeAll()
+        navigationController.setViewControllers([], animated: false)
+        start()
     }
 }

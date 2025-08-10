@@ -135,6 +135,7 @@ extension HomeViewController {
         setupTableviewUI()
         setupTableFooterLoader()
         setupRefreshControl()
+        setupLogoutButton()
     }
     
     private func setupHierarchy() {
@@ -162,6 +163,24 @@ extension HomeViewController {
     }
     @objc private func didPullToRefresh() {
         fetchData()
+    }
+    private func setupLogoutButton() {
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            title: "Logout",
+            style: .plain,
+            target: self,
+            action: #selector(logoutTapped)
+        )
+    }
+    @objc private func logoutTapped() {
+
+        let alert = UIAlertController(title: "Logout", message: "Are you sure?", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        alert.addAction(UIAlertAction(title: "Logout", style: .destructive) { _ in
+            self.viewModel.logout()
+        })
+        present(alert, animated: true)
+
     }
 }
 

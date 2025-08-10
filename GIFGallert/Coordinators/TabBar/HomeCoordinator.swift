@@ -11,7 +11,7 @@ final class HomeCoordinator: Coordinator {
     var childCoordinators: [Coordinator]
     var parentCoordinator: (Coordinator)?
     var navigationController: UINavigationController
-    
+    var onLogout: (() -> Void)?
     init(navigationController: UINavigationController) {
         self.navigationController = navigationController
         childCoordinators = []
@@ -26,6 +26,11 @@ final class HomeCoordinator: Coordinator {
         viewModel.navigateToDetails = { [weak self] model in
             guard let self else { return }
             pushDetailsViewController(model: model)
+        }
+        
+        viewModel.logoutUser = { [weak self] in
+            guard let self else { return }
+            onLogout?()
         }
         
         navigationController.pushViewController(homeViewController, animated: false)
