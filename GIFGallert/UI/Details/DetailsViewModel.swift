@@ -31,7 +31,7 @@ final class DetailsViewModel {
     }
     
     func handleFavoriteTap() {
-        if isFavorite {
+        if favoritesService.isFavorite(id) {
             favoritesService.remove(id: id)
             updateToFavorite?(false)
         } else {
